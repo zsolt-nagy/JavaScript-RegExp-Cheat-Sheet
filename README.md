@@ -1,4 +1,4 @@
-# JavaScript-RegExp-Cheat-Sheet version 0.1.1
+# JavaScript-RegExp-Cheat-Sheet version 0.2
 
 This document describes the regular expression features available in JavaScript up to ES2018. Some ES2018 features have not been released.
 
