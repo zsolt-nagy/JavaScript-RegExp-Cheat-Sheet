@@ -1,4 +1,4 @@
-# JavaScript-RegExp-Cheat-Sheet version 0.4.1
+# JavaScript-RegExp-Cheat-Sheet version 0.4.2
 
 This document describes the regular expression features available in JavaScript up to ES2018. Some ES2018 features have not been released.
 
@@ -364,7 +364,7 @@ input   "aceff"
 
 ## Lookahead and Lookbehind
 
-| Lookahead type | JavaSCript syntax | Remark |
+| Lookahead type | JavaScript syntax | Remark |
 |----------------|-------------|---------------|
 | positive lookahead | `(?=pattern)` |  |
 | negative lookahead | `(?!pattern)` |  |
