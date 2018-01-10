@@ -1,4 +1,4 @@
-# JavaScript-RegExp-Cheat-Sheet version 0.1
+# JavaScript-RegExp-Cheat-Sheet version 0.1.1
 
 This document describes the regular expression features available in JavaScript up to ES2018. Some ES2018 features have not been released.
 
@@ -80,7 +80,7 @@ false
 true
 ```  
 
-# Regex API
+## Regex API
 
 - `regex.exec( str )`: returns information on the first match. Exec allows iteration on the regex for all matches if the `g` modifier is set for the regex
 - `regex.test( str )`: true iff regex *matches* a string
