@@ -1,4 +1,4 @@
-# JavaScript-RegExp-Cheat-Sheet version 0.3
+# JavaScript-RegExp-Cheat-Sheet version 0.4
 
 This document describes the regular expression features available in JavaScript up to ES2018. Some ES2018 features have not been released.
 
@@ -293,6 +293,49 @@ In the last example, notice the parentheses. As the `|` operator has the lowest 
 - `.`: arbitrary character class
     - Example: `/..e/`: three character sequence ending with `e`
 - other character classes such as digit (`\d`), not a digit (`\D`), word (`\w`), not a word (`\W`), whitespace character (`\s`): check out the section on metasyntax characters
+
+## Lookahead and Lookbehind
+
+| Lookahead type | JavaSCript syntax | Remark |
+|----------------|-------------|---------------|
+| positive lookahead | `(?=pattern)` |  |
+| negative lookahead | `(?!pattern)` |  |
+| positive lookbehind | `(?<=pattern)` | only expected in ES2018 |
+| negative lookbehind | `(?<!pattern)` | only expected in ES2018 |
+| word boundary | `\b` | used both as lookahead and lookbehind |
+| start of string/line | `^` | used as a lookbehind |
+| end of string/line | `$` | used as a lookbehind |
+
+- Lookaheads and lookbehinds are non-capturing
+- Opposed to Perl 5, lookbehinds can be of variable length, because matching is implemented backwards. This means no restrictions in lookbehind length
+    - as a consequence of backwards matching, using capture groups inside lookbehinds are evaluated according to the rules of backwards matching
+
+Examples:
+
+```
+> /a(?=b)/.exec( 'ab' )
+["a", index: 0, input: "ab"]
+
+> /a(?!\d)/.exec( 'ab' )
+["a", index: 0, input: "ab"]
+> /a(?!\d)/.exec( 'a0' )
+null
+
+> /(?<=a)b/.exec( 'ab' )
+["b", index: 1, input: "ab"] // executed in latest Google Chrome
+
+/(?<!a)b/.exec( 'Ab' )
+["b", index: 1, input: "Ab"] // executed in latest Google Chrome
+
+/\bregex\b/.exec( 'This regex expression tests word boundaries.' )
+["regex", index: 5, input: "This regex expression tests word boundaries."]
+
+/^regex$/.exec( 'This\nregex\nexpression\ntests\nanchors.' )
+null
+
+/^regex$/m.exec( 'This\nregex\nexpression\ntests\nanchors.' )
+["regex", index: 5, input: "This↵regex↵expression↵tests↵anchors."]
+```
 
 ## Repeat modifiers
 
