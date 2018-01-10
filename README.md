@@ -275,10 +275,46 @@ Examples:
 /a+/.test( 'ba' )   // true, the `a` character was found
 /a{3}/.test('baaab')// true, three consecutive 'a' characters were found  
 /(a|b)c/.test('abc')// true, a `b` character is followed by `c`
+/a(?=b)/.test('ab') // true. It matches 'a', because 'a' is followed by 'b'
+/a(?!b)/.test('ab') // false, because 'a' is not followed by 'b'
+/\ba/.test('bab')   // false, because 'a' is not the first character of a word
+/\Ba/.test('bab')   // true, because 'a' is not the first character of a word
+/(\d)\1/.test('55') // true. It matches two consecutive digits with the same value
 ```
 
 In the last example, notice the parentheses. As the `|` operator has the lowest precedence out of all operators, parentheses made it possible to increase the prcedence of the alternative execution `a|b` higher than concatenation `(a|b)c`.
 
+## Character sets, character classes
+
+- `[abc]` is `a|b|c`
+- `[a-c]` is `[abc]`
+- `[0-9a-fA-F]` is a case-insensitive hexadecimal digit
+- `[^abc]` is an arbitrary character that is not `a`, not `b`, and not `c`
+- `.`: arbitrary character class
+    - Example: `/..e/`: three character sequence ending with `e`
+- other character classes such as digit (`\d`), not a digit (`\D`), word (`\w`), not a word (`\W`), whitespace character (`\s`): check out the section on metasyntax characters
+
+## Repeat modifiers
+
+| Repeat modifier (PCRE) | Description |
+|-----------------|-------------|
+| `+` | Match at least once |
+| | |
+| `?` | Match at most once |
+| | |
+| `*` | Match any number of times |
+| | |
+| `{min,max}` | match at least `min` times, and at most `max` times |
+| | |
+| `{n}` | Match exactly `n` times |
+
+Examples:
+
+- `/^a+$/` matches any string consisting of one or more `'a'` characters and nothing else
+- `/^a?$/` matches `''` or `'a'`. The string may contain at most one `'a'` character
+- `/^a*$/` matches the empty string and everything matched by `/^a+$/`
+- `/^a{3,5}$/` matches `'aaa'`, `'aaaa'`, and `'aaaaa'`
+- `/(ab){3}/` matches any string containing the substring `'ababab'`
 
 ## Articles
 
