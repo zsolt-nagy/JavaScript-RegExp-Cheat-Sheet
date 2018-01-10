@@ -1,4 +1,4 @@
-# JavaScript-RegExp-Cheat-Sheet version 0.2
+# JavaScript-RegExp-Cheat-Sheet version 0.3
 
 This document describes the regular expression features available in JavaScript up to ES2018. Some ES2018 features have not been released.
 
@@ -315,6 +315,52 @@ Examples:
 - `/^a*$/` matches the empty string and everything matched by `/^a+$/`
 - `/^a{3,5}$/` matches `'aaa'`, `'aaaa'`, and `'aaaaa'`
 - `/(ab){3}/` matches any string containing the substring `'ababab'`
+
+## Capture groups
+
+- `(` and `)` captures a substring inside a regex
+- Capture groups have a reference number equal to the order of the starting parentheses of the open parentheses of the capture group starting with `1`
+- `(?:` and `)` act as non-capturing parentheses, they are not included in the capture group numbering
+
+Example:
+
+```
+/a(b|c(d|(e))(f))$/
+  ^   ^  ^   ^
+  |   |  |   |
+  1   2  3   4
+```
+
+```
+> console.table( /^a(b|c(d|(e))(f+))$/.exec( 'ab' ) )  
+(index) Value
+0       "ab"
+1       "b"
+2       undefined
+3       undefined
+4       undefined
+index   0
+input   "ab"
+
+> console.table( /^a(b|c(d|(e))(f+))$/.exec( 'aceff' ) )  
+(index) Value
+0       "aceff"
+1       "ceff"
+2       "e"
+3       "e"
+4       "ff"
+index   0
+input   "aceff"
+
+> console.table( /^a(b|c(?:d|(e))(f+))$/.exec( 'aceff' ) )  
+(index) Value
+0       "aceff"
+1       "ceff"
+2       "e"
+3       "ff"
+index   0
+input   "aceff"
+```
 
 ## Articles
 
