@@ -1,4 +1,4 @@
-# JavaScript-RegExp-Cheat-Sheet version 0.4.2
+# JavaScript-RegExp-Cheat-Sheet version 1.0.0
 
 This document describes the regular expression features available in JavaScript up to ES2018. Some ES2018 features have not been released.
 
@@ -294,9 +294,11 @@ In the last example, notice the parentheses. As the `|` operator has the lowest 
     - Example: `/..e/`: three character sequence ending with `e`
 - other character classes such as digit (`\d`), not a digit (`\D`), word (`\w`), not a word (`\W`), whitespace character (`\s`): check out the section on metasyntax characters
 
-## Repeat modifiers
+## Basic (greedy) Repeat modifiers
 
-| Repeat modifier (PCRE) | Description |
+Matching is maximal. Backtracking is minimal, goes character by character. 
+
+| Repeat modifier | Description |
 |-----------------|-------------|
 | `+` | Match at least once |
 | | |
@@ -315,6 +317,30 @@ Examples:
 - `/^a*$/` matches the empty string and everything matched by `/^a+$/`
 - `/^a{3,5}$/` matches `'aaa'`, `'aaaa'`, and `'aaaaa'`
 - `/(ab){3}/` matches any string containing the substring `'ababab'`
+
+## Lazy Repeat Modifiers
+
+Matching is minimal. During backtracking, we add one character at a time.
+
+| Repeat modifier (PCRE) | Description |
+|-----------------|-------------|
+| `+?` | Match at least once |
+| | |
+| `??` | Match at most once |
+| | |
+| `*?` | Match any number of times |
+| | |
+| `{min,max}?` | match at least `min` times, and at most `max` times |
+| | |
+| `{n}?` | Match exactly `n` times |
+
+Examples for lazy matching:
+
+- `/^a+?$/` lazily matches any string consisting of one or more `'a'` characters and nothing else
+- `/^a??$/` lazily matches `''` or `'a'`. The string may contain at most one `'a'` character
+- `/^a*?$/` lazily matches the empty string and everything matched by `/^a+$/`
+- `/^a{3,5}?$/` lazily matches `'aaa'`, `'aaaa'`, and `'aaaaa'`
+- `/(ab){3}?/` lazily matches any string containing the substring `'ababab'`
 
 ## Capture groups
 
@@ -404,6 +430,33 @@ null
 /^regex$/m.exec( 'This\nregex\nexpression\ntests\nanchors.' )
 ["regex", index: 5, input: "This↵regex↵expression↵tests↵anchors."]
 ```
+
+## Possessive Repeat Modifiers
+
+Attempts a maximal (greedy) match first. The loop does not backtrack though. It either accepts the maximal match, or fails.
+
+Possessive repeat modifiers don't exist in JavaScript. However, there are workarounds.
+
+Assuming we don't have any other capture groups in front of the expression, use 
+- `(?=(a+))\1` instead of the generic PCRE pattern `a++` 
+- `(?=(a*))\1` instead of the generic PCRE pattern `a*+`
+- etc.
+
+## Possessive Alternation
+
+Attempts to match each branch of the alternation until the *first* match is found. After matching a branch in the alternation, we are not allowed to backtrack and try out any other branches in the alternation.
+
+Possessive alternation does not exist in JavaScript. However, there are workarounds.
+
+Assuming we don't have any other capture groups in front of the expression, use `(?=(a|b))\1` instead of the generic PCRE pattern `(?>a|b)` 
+
+## Recommended RegExp library
+
+[XRegExp](https://github.com/slevithan/xregexp)
+- Extended formatting
+- Named captures
+- Possessive loops
+- etc.
 
 ## Articles
 
